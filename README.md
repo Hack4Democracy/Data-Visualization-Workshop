@@ -10,14 +10,14 @@ Download processing from https://processing.org/download/
 
 Run it once you have it installed. In the upper right, you will see a button that says “Java”. Click it:
 
-[image for java]
+![screen1](screenshots/screenshot1.png)
 
 You will see an option to “Add Mode”, select that
 
-[image for select]
+![screen2](screenshots/screenshot2.png)
 
-From the window that opens up, select p5.js Mode, and press the install button. 
+From the window that opens up, select p5.js Mode, and press the install button.
 
-[image for install]
+![screen3](screenshots/screenshot3.png)
 
-When that is done, go back to the “Java” button in the upper right, and select the brand new “p5.js” mode. 
+When that is done, go back to the “Java” button in the upper right, and select the brand new “p5.js” mode.
