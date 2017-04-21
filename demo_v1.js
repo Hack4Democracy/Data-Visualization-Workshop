@@ -20,31 +20,17 @@ var districtLookup = {
   'YVSF' : 'Youth Violence Strike Force'
   }
 
-
-var censusPercents = {
-  "asian/pacific" :  8.9, 
-  "black" : 24.4, 
-  "hispanic" : 17.5, 
-  "white" : 47, 
-  "native american" : 0, // or < .5
-  "middle eastern" : 0 // not tracked
-  }
-
-
 /**
  BPD has code 0 for "Not Entered" and 9999 for "Unknown". In this app, we will combine them 
  */
 var raceCodes = ['unidentified', 'Asian or Pacific Islander', 'Black', 'Hispanic', 'White', 'American Indian or Alaskan Native', 'Middle Eastern'];
 var UNKNOWN_RACE = 9999;
 
-var columnWidths = [100, 200, 50, 80, 50, 200, 100];
+var columnWidths = [100, 160, 50, 80, 50, 200, 100];
 
 function preload() {
   table = loadTable("data/Boston_Police_Department_FIO.csv", "csv", "header");
 }
-
-
-
 
 
 function setup() {
@@ -57,6 +43,9 @@ function setup() {
 
   query();
 }
+
+
+
 
 function draw() {
   clear();
@@ -140,40 +129,32 @@ function tally(tallies, district, race, reason, fio) {
   var reasonData = raceData[reason];
   if (undefined === reasonData) {
     reasonData = { 
-    'frisks' : 
-    0, 
-    'investigations' : 
-    0, 
-    'observations' : 
-    0, 
-    'searches' : 
-    0, 
-    'stops' : 
-    0
-  };
-  raceData[reason] = reasonData;
-}
-reasonData.stops++;
+      'frisks' : 0, 
+      'investigations' :  0, 
+      'observations' : 0, 
+      'searches' : 0, 
+      'stops' :  0
+    };
+    raceData[reason] = reasonData;
+  }
+  reasonData.stops++;
 
-// now tally the frisks, searches, investigations, observations
-var i, L = fio.length;
-for (i = 0; i<L; i++) {
-  switch(fio[i]) {
-  case 'F' : 
-    reasonData.frisks++; 
-    break;
-  case 'I' : 
-    reasonData.investigations++; 
-    break;
-  case 'O' : 
-    reasonData.observations++; 
-    break;
-  case 'S' : 
-    reasonData.searches++; 
-    break;
+  // now tally the frisks, searches, investigations, observations
+  var i, L = fio.length;
+  for (i = 0; i<L; i++) {
+    switch(fio[i]) {
+    case 'F' : 
+      reasonData.frisks++; 
+      break;
+    case 'I' : 
+      reasonData.investigations++; 
+      break;
+    case 'O' : 
+      reasonData.observations++; 
+      break;
+    case 'S' : 
+      reasonData.searches++; 
+      break;
+    }
   }
 }
-
-
-}
-
