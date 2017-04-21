@@ -34,7 +34,7 @@ Once the file is downloaded, you can drag it into your processing sketch. You sh
 
 Then, grab the file demo_v1.js from this repository. Open it in a text editor, like Notepad or textEdit, and copy the full contents of the file. Paste the text into the processing editor, then hit the play button at the top. It will open a tab in your browser, and the page will have the text "Loading...". This will take a ahilw, as the code is loadin gthe 62 Mb file, and tallying various columns as it does so. 
 
-![movie1](screenshots/paste_n_play.mp4)
+![gif1](screenshots/paste_n_play.gif)
 
 Once it is done loading, you should see something like this:
 
