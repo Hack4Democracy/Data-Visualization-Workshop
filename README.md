@@ -32,7 +32,7 @@ Once the file is downloaded, you can drag it into your processing sketch. You sh
 
 ![screen4](screenshots/screenshot4.png)
 
-Then, grab the file demo_v1.js from this repository. Open it in a text editor, like Notepad or textEdit, and copy the full contents of the file. Paste the text into the processing editor, then hit the play button at the top. It will open a tab in your browser, and the page will have the text "Loading...". This will take a while, as the code is loading the entire 62 Mb file, and then tallying various columns across all 150k rows. 
+Then, grab the file demo_v0.js from this repository. Open it in a text editor, like Notepad or textEdit, and copy the full contents of the file. Paste the text into the processing editor, then hit the play button at the top. It will open a tab in your browser, and the page will have the text "Loading...". This will take a while, as the code is loading the entire 62 Mb file, and then tallying various columns across all 150k rows. 
 
 ![gif1](screenshots/paste_n_play.gif)
 

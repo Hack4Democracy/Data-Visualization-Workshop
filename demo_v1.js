@@ -20,13 +20,10 @@ var districtLookup = {
   'YVSF' : 'Youth Violence Strike Force'
   }
 
-/**
- BPD has code 0 for "Not Entered" and 9999 for "Unknown". In this app, we will combine them 
- */
-var raceCodes = ['unidentified', 'Asian or Pacific Islander', 'Black', 'Hispanic', 'White', 'American Indian or Alaskan Native', 'Middle Eastern'];
+var raceCodes = ['Not Entered', 'Asian or Pacific Islander', 'Black', 'Hispanic', 'White', 'American Indian or Alaskan Native', 'Middle Eastern', 'Unidentified'];
 var UNKNOWN_RACE = 9999;
-
-var columnWidths = [100, 160, 50, 80, 50, 200, 100];
+var UNKNOWN_RACE_REPLACEMENT = raceCodes.length-1;
+var columnWidths = [100, 160, 50, 80, 50, 200, 100, 100];
 
 function preload() {
   table = loadTable("data/Boston_Police_Department_FIO.csv", "csv", "header");
@@ -40,7 +37,6 @@ function setup() {
   textFont("Helvetica");
   textFont("Helvetica Neue");
   textSize(12);
-
   query();
 }
 
@@ -50,24 +46,31 @@ function setup() {
 function draw() {
   clear();
   var district, raceData, stopData, stopReason, stopCount; 
-  var xpos;
-  var ypos = 100;
+  var xpos = 220;
+  var ypos = 80;
   var raceIndex;
+  textSize(18);
+  text("Boston Police Department – Field Investigation/Observation Stops, 2011-2015", 50, 50);
+  textSize(12);
+  for (raceIndex = 0; raceIndex < raceCodes.length; raceIndex++) {
+    text(raceCodes[raceIndex], xpos, ypos);
+    xpos += columnWidths[raceIndex];
+  }
+  ypos += 18;
   for (district in tallies) {
     text(district, 50, ypos);
     raceData = tallies[district];
     xpos = 220;
-    for (raceIndex = 1; raceIndex < raceCodes.length; raceIndex++) {
-      text(raceCodes[raceIndex], xpos, ypos);
+    for (raceIndex = 0; raceIndex < raceCodes.length; raceIndex++) {
       stopData = raceData[raceIndex];
       stopCount = 0;
       for (stopReason in stopData) {
         stopCount += stopData[stopReason].stops;
       } 
-      text(stopCount, xpos, ypos+ 18);
+      text(stopCount, xpos, ypos);
       xpos += columnWidths[raceIndex];
     }
-    ypos += 36;
+    ypos += 18;
   }
 }
 
@@ -84,8 +87,8 @@ function query() {
       district = districtLookup[district];
     } 
     race = table.get(row, "RACE_ID");
-    if (race == 9999) {
-      race = 0;
+    if (race == UNKNOWN_RACE) {
+      race = UNKNOWN_RACE_REPLACEMENT;
     }
 
     // codes include 

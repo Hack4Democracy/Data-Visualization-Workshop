@@ -1,19 +1,7 @@
-/***
-The data for this sketch is available from :
-
-https://data.cityofboston.gov/Public-Safety/Boston-Police-Department-FIO/xmmk-i78r
-
-click the download button, and chose the "csv" option (not "csv for excel"). 
-
-the field descriptions at 
-https://data.cityofboston.gov/api/views/xmmk-i78r/files/4597e375-e47f-467f-b377-63429a551599?download=true&filename=FIO%20Field%20Descriptions.xlsx 
-could be useful as well as you extend the sketch
-
-*/
-
 var table;
 var rowCount;
 var tallies;
+
 var districtTotals;
 var raceTotals;
 var maxDistrictStops;
@@ -37,21 +25,10 @@ var districtLookup = {
 };
 
 
-/**
- BPD has code 0 for "Not Entered" and 9999 for "Unknown". In this app, we will combine them 
- */
+var raceCodes = ['Not Entered', 'Asian or Pacific Islander', 'Black', 'Hispanic', 'White', 'American Indian or Alaskan Native', 'Middle Eastern', 'Unidentified'];
 var UNKNOWN_RACE = 9999;
-var raceCodes = ['unidentified', 'Asian or Pacific Islander', 'Black', 'Hispanic', 'White', 'American Indian or Alaskan Native', 'Middle Eastern'];
-/** 
- We will skip districts that aren't geographic
-*/
-var IGNORE = 'ignore';
-
-var censusPercents = [2.2, 8.9, 24.4, 17.5, 47,  0 /* or < .5 */,  0 /* not tracked */];
-
-
-
-var columnWidths = [100, 160, 50, 80, 50, 200, 100];
+var UNKNOWN_RACE_REPLACEMENT = raceCodes.length-1;
+var columnWidths = [100, 160, 50, 80, 50, 200, 100, 100];
 var colors = [
   [],
   [255,0,0],
@@ -60,14 +37,17 @@ var colors = [
   [255,127,0]
 ]
 
+/** 
+ We will skip districts that aren't geographic
+*/
+var IGNORE = 'ignore';
 
+var censusPercents = [2.2, 8.9, 24.4, 17.5, 47,  0 /* or < .5 */,  0 /* not tracked */];
 
 
 function preload() {
   table = loadTable("data/Boston_Police_Department_FIO.csv", "csv", "header");
 }
-
-
 
 
 
@@ -89,7 +69,10 @@ function draw() {
   var ypos = 80;
   var raceIndex;
   var districtStops;
-  
+  fill(0);
+  textSize(18);
+  text("Boston Police Department – Field Investigation/Observation Stops, 2011-2015", 50, 50);
+  textSize(12);
   
   xpos = 220;
   for (raceIndex = 1; raceIndex <= 4; raceIndex++) {
@@ -146,6 +129,7 @@ function draw() {
 function drawRaceTotals(ypos){
   var xpos = 220;
   var w, rgb, h = 20;
+  var codedCount = 0;
 
   fill(0);
   text("Totals", 50, ypos + h/2+ 2);
@@ -153,13 +137,15 @@ function drawRaceTotals(ypos){
     rgb = colors[raceIndex];
     fill(rgb[0],rgb[1],rgb[2]);
     w = map(raceTotals[raceIndex],0.0,allStops,0, 700.0);
+    codedCount += raceTotals[raceIndex];
     rect(xpos, ypos, w, h);
     xpos += w;
   }
   fill(127);
-  w = map(raceTotals[0],0.0,allStops,0, 700.0);
+  w = map(allStops - codedCount, 0.0,allStops,0, 700.0);
   rect(xpos, ypos, w, h);
 }
+
 
 
 function drawCensusBreakdown(ypos){
@@ -195,8 +181,8 @@ function query() {
       district = IGNORE;
     }
     race = table.get(row, "RACE_ID");
-    if (race == 9999) {
-      race = 0;
+    if (race == UNKNOWN_RACE) {
+      race = UNKNOWN_RACE_REPLACEMENT;
     }
 
     // codes include 
